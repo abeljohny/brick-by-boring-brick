@@ -1,2 +1,3 @@
-# brick-by-boring-brick
-solutions to leetcode problems
+# brick by boring brick 🧱
+
+LeetCode solutions
