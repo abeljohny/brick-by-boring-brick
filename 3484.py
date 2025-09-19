@@ -3,11 +3,12 @@ class Spreadsheet:
     def __init__(self, rows: int):
         self._sheet = [[0] * 26 for _ in range(rows)]
 
-    def _getCell(self, cell: str) -> tuple[int, int]:
-        return ord(cell[0]) - 65, int(cell[1:]) - 1
+    def _getCell(self, cell: str) -> tuple[int, int, int]:
+        row, col = int(cell[1:]) - 1, ord(cell[0]) - 65
+        return int(self._sheet[row][col]), row, col
 
     def setCell(self, cell: str, value: int) -> None:
-        col, row = self._getCell(cell)
+        _, row, col = self._getCell(cell)
         self._sheet[row][col] = value
 
     def resetCell(self, cell: str) -> None:
@@ -15,18 +16,8 @@ class Spreadsheet:
 
     def getValue(self, formula: str) -> int:
         cells = formula[1:].split('+')
-        if cells[0].isdigit():
-            c0 = int(cells[0])
-        else:
-            c0_col, c0_row = self._getCell(cells[0])
-            c0 = int(self._sheet[c0_row][c0_col])
-
-        if cells[1].isdigit():
-            c1 = int(cells[1])
-        else:
-            c1_col, c1_row = self._getCell(cells[1])
-            c1 = int(self._sheet[c1_row][c1_col])
-
+        c0 = int(cells[0]) if cells[0].isdigit() else self._getCell(cells[0])[0]
+        c1 = int(cells[1]) if cells[1].isdigit() else self._getCell(cells[1])[0]
         return c0 + c1
 
 
